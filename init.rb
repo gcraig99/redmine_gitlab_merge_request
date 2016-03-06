@@ -9,7 +9,9 @@ Redmine::Plugin.register :redmine_gitlab_merge_request do
   requires_redmine :version_or_higher => '2.0.0'
   
   settings :default => {
-    'gitlab_url' => ''
+    'gitlab_url' => '',
+    'gitlab_username' => '',
+    'gitrlab_password' => ''
   }, :partial => 'settings/gitlab_settings'
   
   project_module :gitlab_merge_request do

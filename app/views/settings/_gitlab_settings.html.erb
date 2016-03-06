@@ -3,5 +3,11 @@
 <p><label>Gitlab global url</label>
 <%= text_field_tag 'settings[gitlab_url]', @settings['gitlab_url'] %><br />
 </p>
+  <p><label>Gitlab username</label>
+  <%= text_field_tag 'settings[gitlab_username]', @settings['gitlab_username'] %><br />
+    </p>
+  <p><label>Gitlab password</label>
+  <%= password_field_tag 'settings[gitlab_password]', @settings['gitlab_password'] %><br />
+  </p>
 
 </fieldset>

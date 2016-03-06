@@ -6,17 +6,30 @@
 
 
 <fieldset class="box tabular">
-
-    <%= error_messages_for 'merge_request' %>
-
-<% if @project.child? %>
+<% if flash[:notice]  %>
+      <div class="notice" style="margin-left: 45%; margin-right: 45%"><%= flash[:notice] %></div>
+  <% end %>
+  <% if @gitlab_merge_request.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@gitlab_merge_request.errors.count, "error") %> prohibited the settings from being saved:</h2>
+        <ul>
+          <% @gitlab_merge_request.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+  <% end %>
+  <div id="merge_request_project_param" <% if @gitlab_merge_request.use_parent_settings %>style="display: none;"<% end%>>
+    <% if @project.child? %>
     <p><%= f.check_box :use_parent_settings %></p>
-    
-    <div id="merge_request_project_param" <% if @merge_request.use_parent_settings %>style="display: none;"<% end%>>
 <% else %>
-    <div id="merge_request_project_param">
+
+        <%# f.hidden_field :use_parent_settings, :value => @gitlab_merge_request.use_parent_settings  %>
 <% end %>
-        <p><%= f.text_field :gitlab_url, :size => 60, :required => false %></p>
+
+
+        <p><%= f.text_field :gitlab_url, :size => 60, :required => false %>
+
 
         <p><%= f.text_field :project_name, :size => 30, :required => false %></p>
 

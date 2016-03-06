@@ -15,7 +15,10 @@ module RedmineGitlabMergeRequest
       module InstanceMethods
         def settings_with_merge_request
           settings_without_merge_request
-          @merge_request = GitlabMergeRequest.find_or_initialize_by_project_id(:project_id => @project.id)
+          @gitlab_merge_request = GitlabMergeRequest.find_or_initialize_by(:project_id => @project.id)
+          if !@gitlab_merge_request.gitlab_url
+              @gitlab_merge_request.gitlab_url = Setting.plugin_redmine_gitlab_merge_request['gitlab_url']
+          end
         end
       end
 

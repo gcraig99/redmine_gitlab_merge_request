@@ -5,11 +5,14 @@ class MergeRequestController < ApplicationController
   # Create or update a project's merge request settings
   def edit
     if User.current.allowed_to? :manage_gitlab_merge_request, @project
-      @merge_request = GitlabMergeRequest.find_or_initialize_by_project_id(:project_id => @project.id)
-      @merge_request.safe_attributes = params[:merge_request]
-      @merge_request.save if request.post?
+      @gitlab_merge_request = GitlabMergeRequest.find_or_initialize_by(:project_id => @project.id)
+      @gitlab_merge_request.update(merge_request_params) if request.post?
+      flash[:notice] = "Settings saved"
+      #@merge_request.save
     end
   end
-
-
+private
+  def merge_request_params
+    params.require(:merge_request).permit(:gitlab_url, :project_name, :assignee_id, :milestone_id, :source, :target, :use_parent_settings)
+  end
 end

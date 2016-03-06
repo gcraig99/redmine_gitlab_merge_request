@@ -2,7 +2,7 @@ class GitlabMergeRequestIssueHook < Redmine::Hook::ViewListener
   
   def view_issues_show_description_bottom(context = { })
     if User.current.allowed_to? :new_gitlab_merge_request, context[:project]
-      merge_request = GitlabMergeRequest.find_by_project_id(context[:project].id)
+      merge_request = GitlabMergeRequest.find_by(:project_id, context[:project].id)
       if merge_request.blank?
         return ""
       end

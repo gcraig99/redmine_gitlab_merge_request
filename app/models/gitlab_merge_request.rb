@@ -1,6 +1,7 @@
 class GitlabMergeRequest < ActiveRecord::Base
   unloadable
-  include Redmine::SafeAttributes
+  #include Redmine::SafeAttributes
+  include ActiveRecord::Validations
   
   belongs_to :project
   
@@ -8,7 +9,7 @@ class GitlabMergeRequest < ActiveRecord::Base
   validates :assignee_id, :numericality => true, :allow_blank => true
   validates :milestone_id, :numericality => true, :allow_blank => true
   
-  safe_attributes :gitlab_url, :project_name, :assignee_id, :milestone_id, :source, :target, :use_parent_settings 
+  #safe_attributes :gitlab_url, :project_name, :assignee_id, :milestone_id, :source, :target, :use_parent_settings
   
   
   def buildUrl(issue)
@@ -48,8 +49,8 @@ class GitlabMergeRequest < ActiveRecord::Base
     return URI.encode(val.gsub(/\:id/, id.to_s).gsub(/\:title/, title.to_s))
   end
   
-  def getParent()
-    return GitlabMergeRequest.find_or_initialize_by_project_id(:project_id => self.project.parent.id)
+  def getParent
+    return GitlabMergeRequest.find_or_initialize_by(:project_id, self.project.parent.id)
   end
   
 end
